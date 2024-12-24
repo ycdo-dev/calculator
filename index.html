@@ -197,33 +197,33 @@
         <div class="display" id="display">0</div>
         <div class="history-section">
             <div class="history-header">
-                <span class="history-title">History</span>
-                <button class="clear-history" onclick="clearHistory()">Clear History</button>
+                <span class="history-title">ប្រវត្តិនៃការគណនា</span>
+                <button class="clear-history" onclick="clearHistory()">សម្អាត</button>
             </div>
             <div class="history-list" id="historyList"></div>
         </div>
         <div class="buttons">
-            <button class="clear" onclick="clearDisplay()">AC</button>
+            <button class="clear" onclick="clearDisplay()">លុប</button>
             <button class="backspace" onclick="backspace()">⌫</button>
-            <button class="operator" onclick="setOperator('/')">/</button>
+            <button class="operator" onclick="setOperator('/')">÷</button>
             <button class="operator" onclick="setOperator('*')">×</button>
             
-            <button class="number" onclick="appendNumber('7')">7</button>
-            <button class="number" onclick="appendNumber('8')">8</button>
-            <button class="number" onclick="appendNumber('9')">9</button>
+            <button class="number" onclick="appendNumber('7')">៧</button>
+            <button class="number" onclick="appendNumber('8')">៨</button>
+            <button class="number" onclick="appendNumber('9')">៩</button>
             <button class="operator" onclick="setOperator('-')">−</button>
             
-            <button class="number" onclick="appendNumber('4')">4</button>
-            <button class="number" onclick="appendNumber('5')">5</button>
-            <button class="number" onclick="appendNumber('6')">6</button>
+            <button class="number" onclick="appendNumber('4')">៤</button>
+            <button class="number" onclick="appendNumber('5')">៥</button>
+            <button class="number" onclick="appendNumber('6')">៦</button>
             <button class="operator" onclick="setOperator('+')">+</button>
             
-            <button class="number" onclick="appendNumber('1')">1</button>
-            <button class="number" onclick="appendNumber('2')">2</button>
-            <button class="number" onclick="appendNumber('3')">3</button>
+            <button class="number" onclick="appendNumber('1')">១</button>
+            <button class="number" onclick="appendNumber('2')">២</button>
+            <button class="number" onclick="appendNumber('3')">៣</button>
             <button class="equals" onclick="calculate()">=</button>
             
-            <button class="number zero" onclick="appendNumber('0')">0</button>
+            <button class="number zero" onclick="appendNumber('0')">០</button>
             <button class="number decimal" onclick="appendDecimal()">.</button>
             <button class="equals" onclick="calculate()">=</button>
         </div>
@@ -239,10 +239,19 @@
         const display = document.getElementById('display');
         const historyList = document.getElementById('historyList');
 
+        function toKhmerNumber(number) {
+            const khmerNumerals = {
+                '0': '០', '1': '១', '2': '២', '3': '៣', '4': '៤',
+                '5': '៥', '6': '៦', '7': '៧', '8': '៨', '9': '៩'
+            };
+            return number.toString().replace(/[0-9]/g, digit => khmerNumerals[digit]);
+        }
+
         function formatNumber(number) {
             let [integerPart, decimalPart] = number.split('.');
             integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            return decimalPart ? `${integerPart}.${decimalPart}` : integerPart;
+            const formattedNumber = decimalPart ? `${integerPart}.${decimalPart}` : integerPart;
+            return toKhmerNumber(formattedNumber);
         }
 
         function updateDisplay() {
@@ -287,8 +296,9 @@
         function addToHistory(expression, result) {
             const historyItem = document.createElement('div');
             historyItem.className = 'history-item';
+            const khmerExpression = expression.replace(/[0-9]/g, digit => toKhmerNumber(digit));
             historyItem.innerHTML = `
-                <div class="expression">${expression}</div>
+                <div class="expression">${khmerExpression}</div>
                 <div class="result">${formatNumber(result)}</div>
             `;
             historyList.insertBefore(historyItem, historyList.firstChild);
